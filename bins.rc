@@ -1,0 +1,12 @@
+{
+    "Backs": [
+        "localhost:12790",
+        "localhost:12791",
+        "localhost:12792",
+        "localhost:12793",
+        "localhost:12794"
+    ],
+    "Keepers": [
+        "localhost:12900"
+    ]
+}
