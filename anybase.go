@@ -42,7 +42,7 @@ func (self *AnybaseService) ListUsers() ([]string, error) {
 }
 func (self *AnybaseService) ListDocs() ([]string, error) {
 	fmt.Println("[AnybaseService][ListDocs]")
-	tempList := []string{"The First document", "Declaration of Independence", "Constitution"}
+	tempList := []string{"Sample_document_1", "dummy_document_1", "moar doc"}
 	return tempList, nil	
 }
 // Post a tribble.  The clock is the maximum clock value this user has

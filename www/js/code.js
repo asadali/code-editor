@@ -17,7 +17,7 @@
 
   listDocs = function(data) {
     var doc, docs, li, ret, ul, _i, _len, _ref; 
-   ret = JSON.parse(data);
+    ret = JSON.parse(data);
     if (ret.Err !== "") {
       appendError(ret.Err);
       return;
@@ -68,8 +68,8 @@
 
   _showHome = function() {
     $.ajax({
-      url: "api/list-docs",
-      type: "POST",
+      url: "/api/list-docs",
+      type: "GET",
       success: listDocs,
       cache: false
     });
@@ -78,7 +78,6 @@
   main = function() {
     _showHome()
     $("div#errors").hide();
-    listDocs();
   };
 
   $(document).ready(main);
