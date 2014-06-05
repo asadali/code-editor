@@ -28,6 +28,7 @@ func NewDSClient(backs []string, binName string) Storage {
 // Gets a value. Empty string by default.
 func (self *DSClient) Get(key string, value *string) error {
 		fmt.Println("[DSClient][Get]")
+		fmt.Println(self.backs, self.storageList, self.userName, self.storageStatus)
 	    return nil
 }
 

@@ -25,6 +25,8 @@ type Server interface {
 	// The result should be sorted in alphabetical order.
 	ListUsers() ([]string, error)
 
+	ListDocs() ([]string, error)
+
 	// Post a tribble.  The clock is the maximum clock value this user has
 	// seen so far by reading tribbles or clock sync.
 	// Returns error when who does not exist;

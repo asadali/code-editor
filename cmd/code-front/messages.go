@@ -14,6 +14,11 @@ type TribList struct {
 	Tribs []*trib.Trib
 }
 
+type DocList struct {
+	Err string
+	Docs []string		
+}
+
 type Bool struct {
 	Err string
 	V   bool
@@ -30,6 +35,10 @@ func NewTribList(tribs []*trib.Trib, e error) *TribList {
 
 func NewUserList(users []string, e error) *UserList {
 	return &UserList{errString(e), users}
+}
+
+func NewDocList(docs []string, e error) *DocList {
+	return &DocList{errString(e), docs}
 }
 
 func NewBool(b bool, e error) *Bool {

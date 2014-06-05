@@ -17,6 +17,7 @@ func main() {
 	flag.Parse()
 
 	*addr = randomaddr.Resolve(*addr)
+	*addr = "localhost:9000"
 
 	s := store.NewStorage()
 

@@ -3,7 +3,7 @@ package main
 
 import (
 	"fmt"
-	//"encoding/json"
+	"encoding/json"
 	"flag"
 	"go/build"
 	"io/ioutil"
@@ -19,7 +19,7 @@ import (
 )
 
 var (
-	verbose = flag.Bool("v", false, "verbose logging")
+	verbose = flag.Bool("v", true, "verbose logging")
 	lab     = flag.Bool("lab", false, "use lab implementation")
 	addr    = flag.String("addr", "localhost:rand", "serve address")
 	frc     = flag.String("rc", "bins.rc",
@@ -32,7 +32,7 @@ var (
 
 func handleApi(w http.ResponseWriter, r *http.Request) {
 	name := strings.TrimPrefix(r.URL.Path, "/api/")
-	/*
+
 	reply := func(obj interface{}) {
 		bytes, e := json.Marshal(obj)
 		noError(e)
@@ -40,7 +40,6 @@ func handleApi(w http.ResponseWriter, r *http.Request) {
 		_, e = w.Write(bytes)
 		logError(e)
 	}
-	*/
 
 	bytes, e := ioutil.ReadAll(r.Body)
 	if e != nil {
@@ -66,10 +65,16 @@ func handleApi(w http.ResponseWriter, r *http.Request) {
 		*/
 
 	case "list-users":
-		/*
+		fmt.Println("[list-users]")
+		
 		ret, e := server.ListUsers()
 		reply(NewUserList(ret, e))
-		*/
+
+	case "list-docs":
+		fmt.Println("[list-docs]")
+
+		ret, e:= server.ListDocs()
+		reply(NewDocList(ret, e))
 
 	case "list-tribs":
 		/*
@@ -162,8 +167,8 @@ func makeServer() code.Server {
 	return code.NewFront(c)
 }
 
-func populate()/*(server trib.Server)*/ {
-	/*
+func populate(server code.Server) {
+	
 	ne(server.SignUp("h8liu"))
 	ne(server.SignUp("fenglu"))
 	ne(server.SignUp("rkapoor"))
@@ -177,7 +182,7 @@ func populate()/*(server trib.Server)*/ {
 	ne(server.Follow("fenglu", "rkapoor"))
 
 	ne(server.Follow("rkapoor", "h8liu"))
-	*/
+
 }
 
 func wwwPath() string {
@@ -192,14 +197,14 @@ func main() {
 	fmt.Println("This is the main() my only friend, the main()")
 	flag.Parse()
 
-	//server = makeServer()
-	/*
+	server = makeServer()
+
 	if *dbinit {
 		populate(server)
 	}
-	*/
+
 	*addr = randomaddr.Resolve(*addr)
-	//*addr = "localhost:9000"
+	*addr = "localhost:9000"
 	log.Printf("serve on %s", *addr)
 
 	http.Handle("/", http.FileServer(http.Dir(wwwPath())))

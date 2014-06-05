@@ -6,6 +6,7 @@ import (
 	"log"
 	"math"
 	"sync"
+	"fmt"
 
 	"code"
 )
@@ -61,6 +62,7 @@ func (self *Storage) Clock(atLeast uint64, ret *uint64) error {
 }
 
 func (self *Storage) Get(key string, value *string) error {
+	fmt.Println("[Storage][Get]", key)
 	self.strLock.Lock()
 	defer self.strLock.Unlock()
 

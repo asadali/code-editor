@@ -12,7 +12,7 @@ func NewBinClient(backs []string) BinStorage {
 }
 
 func NewFront(s BinStorage) Server {
-	return &TribblrService{ bin : s }
+	return &AnybaseService{ bin : s }
 }
 
 func (self *BinSClient) Bin(binName string) Storage {
