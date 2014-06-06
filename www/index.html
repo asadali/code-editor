@@ -7,10 +7,22 @@
     <title>CODE - COllaborative Document Editor</title>
 
     <!-- Bootstrap -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/code.index.css" rel="stylesheet">
-    <link href="css/docs.min.css" rel="stylesheet">
-    <!-- some shit excluded from template here -->
+    <link href="css/bootstrap.css" rel="stylesheet"/>
+    <link href="css/code.index.css" rel="stylesheet"/>
+    <link href="css/docs.min.css" rel="stylesheet"/>
+    <link href="css/firepad.css" rel="stylesheet"/>
+    <link href="css/codemirror.css" rel="stylesheet"/>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/code.js"></script>
+    <script src="js/codemirror.js"></script>
+    <script src="js/firebase.js"></script>
+    <script src="js/firepad.js"></script>
+
   </head>
   <body>
 
@@ -32,24 +44,6 @@
 
     <div id="docs" class="bs-example">
       <div class="list-group-justified">
-        <a href="#" class="list-group-item"><!-- active"> -->
-          <span class="glyphicon glyphicon-file"></span>
-          Linked item in .list-group
-          <span class="glyphicon glyphicon-chevron-right"></span>
-          <span class="badge">44</span>
-        </a>
-        <a href="#" class="list-group-item">
-          <span class="glyphicon glyphicon-file"></span>
-          Linked item in .list-group with Chevron and Badge
-          <span class="glyphicon glyphicon-chevron-right"></span>
-          <span class="badge badge-primary">14</span>
-        </a>
-        <a href="#" class="list-group-item">
-          <span class="glyphicon glyphicon-file"></span>
-          This is a preview of BS3
-          <span class="glyphicon glyphicon-chevron-right"></span>
-          <span class="badge">5</span>
-        </a>
         <a href="#" class="list-group-item">
           <span class="glyphicon glyphicon-file"></span>
           What happened to `badge-success`?
@@ -63,21 +57,36 @@
           <span class="badge">69</span>
         </a>
       </div>
-  
-</div>
+    </div>
+      <div class="page-header">
+        <h1><small>Document Editor Demo</small></h1>
+      </div>
 
+      <div id="firepad" class="well"></div>
+      <script>
+      //// Initialize Firebase.
+      var firepadRef = new Firebase('https://blistering-fire-9858.firebaseio.com');
+
+      //// Create Codemirror (with lineWrapping on).
+      var codeMirror = CodeMirror(document.getElementById('firepad'), { lineWrapping: true });
+
+      //// Create Firepad (with rich text toolbar and shortcuts enabled).
+      var firepad = Firepad.fromCodeMirror(firepadRef, codeMirror,
+        { richTextToolbar: true, richTextShortcuts: true });
+
+      //// Initialize contents.
+    firepad.on('ready', function() {
+      if (firepad.isHistoryEmpty()) {
+        firepad.setText('Check it Out!');
+      }
+    });
+      console.log("Firepad initiated!")
+      </script>
+  
       <div class="footer">
         <p>&copy; Sayed Asad Ali &amp; Shashank Kaushik</p>
       </div>
 
     </div> <!-- /container -->
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/code.js"></script>
   </body>
 </html>
