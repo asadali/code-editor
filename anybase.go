@@ -1,7 +1,7 @@
 package code 
 
 import (
-	//"sort"
+	"sort"
 	//"math"
 	//"sync"
 	//"time"
@@ -41,9 +41,22 @@ func (self *AnybaseService) ListUsers() ([]string, error) {
 	return tempList, nil
 }
 func (self *AnybaseService) ListDocs() ([]string, error) {
-	fmt.Println("[AnybaseService][ListDocs]")
-	tempList := []string{"Sample_document_1", "dummy_document_1", "moar doc"}
-	return tempList, nil	
+
+	var secretBin Storage
+	var docList List
+	var err error
+
+	secretBin = self.bin.Bin(SECRET_BIN_KEY)
+	err = secretBin.ListGet(DOC_LIST, &docList)
+	if err != nil {
+		return nil, fmt.Errorf("error in retrieving doc_list from secret bin", DOC_LIST)
+	}
+
+	sort.Strings(docList.L)
+	if len(docList.L) > MIN_DOCS {
+		docList.L = docList.L[:MIN_DOCS]
+	}
+	return docList.L, nil	
 }
 // Post a tribble.  The clock is the maximum clock value this user has
 // seen so far by reading tribbles or clock sync.
