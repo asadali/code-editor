@@ -37,10 +37,11 @@ func (self *AnybaseService) SignUp(user string) error {
 // The result should be sorted in alphabetical order.
 func (self *AnybaseService) ListUsers() ([]string, error) {
 	fmt.Println("[AnybaseService][ListUsers]")
-	tempList := []string{"user", "dummy", "singh"}
+	tempList := []string{"user", "santa", "banta"}
 	return tempList, nil
 }
 func (self *AnybaseService) ListDocs() ([]string, error) {
+	fmt.Println("[AnybaseService][ListDocs]")
 
 	var secretBin Storage
 	var docList List
