@@ -4807,11 +4807,9 @@ firepad.Firepad = (function(global) {
   function Firepad(ref, place, options) {
     if (!(this instanceof Firepad)) { return new Firepad(ref, place, options); }
 
-    
     if (!CodeMirror && !ace) {
       throw new Error('Couldn\'t find CodeMirror or ACE.  Did you forget to include codemirror.js or ace.js?');
     }
-    
 
     if (CodeMirror && place instanceof CodeMirror) {
       this.codeMirror_ = this.editor_ = place;
@@ -4857,7 +4855,7 @@ firepad.Firepad = (function(global) {
       this.firepadWrapper_.className += ' firepad-richtext firepad-with-toolbar';
     }
 
-    //this.addPoweredByLogo_();
+    this.addPoweredByLogo_();
 
     // Now that we've mucked with CodeMirror, refresh it.
     if (this.codeMirror_)
