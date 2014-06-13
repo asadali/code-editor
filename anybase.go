@@ -36,12 +36,27 @@ func (self *AnybaseService) SignUp(user string) error {
 // of at least 20 of them needs to be listed.
 // The result should be sorted in alphabetical order.
 func (self *AnybaseService) ListUsers() ([]string, error) {
-	fmt.Println("[AnybaseService][ListUsers]")
-	tempList := []string{"user", "santa", "banta"}
-	return tempList, nil
+	var secretBin Storage
+	var twentyUsersList List
+	var err error
+
+	secretBin = self.bin.Bin(SECRET_BIN_KEY)
+	err = secretBin.ListGet(USER_LIST, &twentyUsersList)
+	if err != nil{
+		return nil, fmt.Errorf("error in getting secret bin", USER_LIST)
+	}
+
+	//twentyUsersList = RemoveDuplicates(twentyUsersList)
+	//sort the list
+	sort.Strings(twentyUsersList.L)
+	if len(twentyUsersList.L) > MIN_DOCS {
+		twentyUsersList.L = twentyUsersList.L[:MIN_DOCS]
+	}
+	//fmt.Println("[LOG][TWENTY]", twentyUsersList.L)
+
+	return twentyUsersList.L, nil
 }
 func (self *AnybaseService) ListDocs() ([]string, error) {
-	fmt.Println("[AnybaseService][ListDocs]")
 
 	var secretBin Storage
 	var docList List

@@ -4,7 +4,7 @@ import(
 	"net/rpc"
 	"strings"
 
-	"fmt"
+	//"fmt"
 )
 
 type StorageClient struct {
@@ -166,9 +166,10 @@ func (self *StorageClient) ListGet(key string, ret *List) error {
     if ret.L == nil {
         ret.L = make([]string, 0)
     } 
+    ret.L = append(ret.L, "Sample Document", "Lorem Ipsum", "Magna Carta")
     //ret.L = []string{"user", "santa", "banta"}
     //fmt.Println("[LOG][listget] Removing duplicates")
-    *ret = RemoveDuplicates(*ret)
+    //*ret = RemoveDuplicates(*ret)
     //close the connection 
     return conn.Close() 
 } 

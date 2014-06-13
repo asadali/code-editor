@@ -30,7 +30,7 @@ func NewDSClient(backs []string, binName string) Storage {
 	//slide to find next alive bin
 	nBin3 := HashNSlide(backs, nBin2 + 1)
 	storageList[2] = NewStorageClient(backs[nBin3], binName)
-	fmt.Println("[LOG][NewDSClient]", binName, storageList[0], storageList[1], storageList[2])
+	//fmt.Println("[LOG][NewDSClient]", binName, storageList[0], storageList[1], storageList[2])
 
 	storageStatus := []bool{true, true, true} 
 	return &DSClient{ 
@@ -136,7 +136,7 @@ func (self *DSClient) Keys(p *Pattern, list *List) error {
 }
 // Get the list.
 func (self *DSClient) ListGet(key string, list *List) error {
-	fmt.Println("[DSClient][ListGet]", key)
+	//fmt.Println("[DSClient][ListGet]", key)
 	e := self.storageList[0].ListGet(key, list)
 	if e != nil {
 		//set refresh flag true

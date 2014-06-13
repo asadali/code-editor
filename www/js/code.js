@@ -16,7 +16,7 @@
   };
 
   listDocs = function(data) {
-    var doc, docs, li, ret, ul, _i, _len, _ref; 
+    var doc, docs, li, ret, ul, _i, _len, _ref, randomNumber; 
     ret = JSON.parse(data);
     if (ret.Err !== "") {
       appendError(ret.Err);
@@ -34,7 +34,7 @@
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       doc = _ref[_i];
       li = $('<a href="#" class="list-group-item"/>');
-      li.append('<span class="glyphicon glyphicon-file"></span>' + doc + '<span class="glyphicon glyphicon-chevron-right"></span> <span class="badge badge-primary">14</span>');
+      li.append('<span class="glyphicon glyphicon-file"></span>' + doc + '<span class="glyphicon glyphicon-chevron-right"></span> <span class="badge badge-primary">' + Math.floor((Math.random()*20 + 1)) + '</span>');
       li.find("a.author").click(function(ev) {
         var name;
         ev.preventDefault();

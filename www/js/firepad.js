@@ -395,20 +395,31 @@ firepad.TextOperation = (function () {
     var ops = [];
     for(var i = 0; i < this.ops.length; i++) {
       // We prefix ops with their attributes if non-empty.
+      //console.log("[toJSON]");
+      //console.log(ops[i]);
       if (!this.ops[i].hasEmptyAttributes()) {
         ops.push(this.ops[i].attributes);
+        //console.log("[toJSON][pushAttributes]");
+        //console.log(this.ops[i].attributes)
       }
       if (this.ops[i].type === 'retain') {
         ops.push(this.ops[i].chars);
+        //console.log("[toJSON][retain]");
+        //console.log(this.ops[i].chars);
       } else if (this.ops[i].type === 'insert') {
         ops.push(this.ops[i].text);
+        //console.log("[toJSON][insert]");
+        //console.log(this.ops[i].text);
       } else if (this.ops[i].type === 'delete') {
         ops.push(-this.ops[i].chars);
+        //console.log("[toJSON][delete]");
+        //console.log(this.ops[i].chars);
       }
     }
     // Return an array with /something/ in it, since an empty array will be treated as null by Firebase.
     if (ops.length === 0) {
       ops.push(0);
+      //console.log("[toJSON][empty]")
     }
     return ops;
   };
@@ -420,6 +431,8 @@ firepad.TextOperation = (function () {
       var op = ops[i];
       var attributes = { };
       if (typeof op === 'object') {
+        //console.log("[fromJSON][attributes]");
+        //console.log(op);
         attributes = op;
         i++;
         op = ops[i];
@@ -427,12 +440,18 @@ firepad.TextOperation = (function () {
       if (typeof op === 'number') {
         if (op > 0) {
           o.retain(op, attributes);
+          //console.log("[fromJSON][retain]");
+          //console.log(op);
         } else {
           o['delete'](-op);
+          //console.log("[fromJSON][delete]");
+          //console.log(op);
         }
       } else {
         utils.assert(typeof op === 'string');
         o.insert(op, attributes);
+        //console.log("[fromJSON][insert]");
+        //console.log(op);
       }
     }
     return o;
@@ -1260,6 +1279,7 @@ firepad.Cursor = (function () {
   function Cursor (position, selectionEnd) {
     this.position = position;
     this.selectionEnd = selectionEnd;
+    console.log("[Cursor]" + position + "selectionEnd: " + selectionEnd);
   }
 
   Cursor.fromJSON = function (obj) {
@@ -1344,7 +1364,6 @@ firepad.AnybaseAdapter = (function (global) {
     var self = this;
     this.firebaseOn_(ref.root().child('.info/connected'), 'value', function(snapshot) {
       //#TODO don't know whats going on here
-      //console.log('[AnybaseAdapter] ref.root().child()', ref.root().chile('.info/connected'))
       if (snapshot.val() === true) {
         self.initializeUserData_();
       }
@@ -1356,9 +1375,12 @@ firepad.AnybaseAdapter = (function (global) {
     }, 0);
 
     // Once we're initialized, start tracking users' cursors.
+    console.log("[AnybaseAdapter] not tracking users' cursors");
     this.on('ready', function() {
+      console.log("[AnybaseAdapter] ready and tracking users' cursors");
       self.monitorCursors_();
     });
+    console.log("[AnybaseAdapter] falling thru");
 
   }
   utils.makeEventEmitter(AnybaseAdapter, ['ready', 'cursor', 'operation', 'ack', 'retry']);
@@ -1390,6 +1412,7 @@ firepad.AnybaseAdapter = (function (global) {
   };
 
   AnybaseAdapter.prototype.isHistoryEmpty = function() {
+    console.log("[AnybaseAdapter] isHistoryEmpty");
     assert(this.ready_, "Not ready yet.");
     return this.revision_ === 0;
   };
@@ -1399,12 +1422,14 @@ firepad.AnybaseAdapter = (function (global) {
 
     // If we're not ready yet, do nothing right now, and trigger a retry when we're ready.
     if (!this.ready_) {
+      console.log("[AnybaseAdapter] doing nothing");
       this.on('ready', function() {
         self.trigger('retry');
       });
       return;
     }
 
+    console.log("[AnybaseAdapter] doing something");
     // Sanity check that this operation is valid.
     assert(this.document_.targetLength === operation.baseLength, "sendOperation() called with invalid operation.");
 
@@ -2016,6 +2041,8 @@ firepad.Client = (function () {
   }
 
   Client.prototype.setState = function (state) {
+    console.log("[Client.setState]");
+    console.log(state);
     this.state = state;
   };
 
@@ -2057,6 +2084,7 @@ firepad.Client = (function () {
     // When the user makes an edit, send the operation to the server and
     // switch to the 'AwaitingConfirm' state
     client.sendOperation(operation);
+    console.log("[applyClient][sendOperation]" + operation);
     return new AwaitingConfirm(operation);
   };
 
@@ -2064,6 +2092,7 @@ firepad.Client = (function () {
     // When we receive a new operation from the server, the operation can be
     // simply applied to the current document
     client.applyOperation(operation);
+    console.log("[applyServer][applyOperation]" + operation);
     return this;
   };
 
@@ -4855,13 +4884,14 @@ firepad.Firepad = (function(global) {
       this.firepadWrapper_.className += ' firepad-richtext firepad-with-toolbar';
     }
 
-    this.addPoweredByLogo_();
+    //this.addPoweredByLogo_();
 
     // Now that we've mucked with CodeMirror, refresh it.
     if (this.codeMirror_)
       this.codeMirror_.refresh();
-
-    var userId = this.getOption('userId', ref.push().name());
+ 
+   var userId = this.getOption('userId', ref.push().name());
+    console.log("[userId]" + userId + " [ref.push().name()]" + ref.push().name());
     var userColor = this.getOption('userColor', colorFromUserId(userId));
 
     this.entityManager_ = new EntityManager();
@@ -4936,6 +4966,7 @@ firepad.Firepad = (function(global) {
   };
 
   Firepad.prototype.setUserId = function(userId) {
+    console.log("[setUserId]" + userID)
     this.firebaseAdapter_.setUserId(userId);
   };
 
