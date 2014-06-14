@@ -72,6 +72,7 @@ func (self *AnybaseService) ListDocs() ([]string, error) {
 	if len(docList.L) > MIN_DOCS {
 		docList.L = docList.L[:MIN_DOCS]
 	}
+	//docList.L = append(docList.L, "Sample Document", "Test Doc")
 	return docList.L, nil	
 }
 // Post a tribble.  The clock is the maximum clock value this user has
